@@ -35,7 +35,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'foodadmin',
+    'main',
+    'menus',
     'employees',
     'crispy_forms',
     'django.contrib.admin',
@@ -98,6 +99,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'employees.employee'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -137,3 +140,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "/"

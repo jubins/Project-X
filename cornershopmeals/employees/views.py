@@ -6,7 +6,6 @@ from employees.models import Employee
 
 
 def Register(request):
-    print('JJreq: ', request)
     if request.method == 'POST':
         form = EmployeeRegisterForm(request.POST)
         if form.is_valid():
@@ -19,7 +18,7 @@ def Register(request):
             # employee.is_admin = request.POST.get('is_admin', False)
             # print('JJpass: ', request.POST)
             # employee.save()
-            return redirect("/home")
+            return redirect("/profile")
     else:
         form = EmployeeRegisterForm()
     context = {'form': form}

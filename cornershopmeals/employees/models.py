@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 
-class Employee(models.Model):
+class Employee(AbstractUser):
     employee_id = models.UUIDField(
         primary_key=True,
         default=uuid4,
@@ -41,18 +41,13 @@ class Employee(models.Model):
         null=False,
         help_text='If the employee is admin.',
     )
-    created_at = models.DateTimeField(
-        default=timezone.now,
-        null=False,
-        help_text='Date when the employee was created.'
-    )
     modified_at = models.DateTimeField(
         auto_now=True,
         null=False,
         help_text='Date when the employee was modified.'
     )
     USERNAME_FIELD = 'email'
-    PASSWORD_FIELD = 'password'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return f'{self.email}'

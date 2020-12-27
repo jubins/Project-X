@@ -6,9 +6,10 @@ from django.views import View
 
 class Index(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'foodadmin/index.html')
+        return render(request, 'main/index.html')
 
 
 class About(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'foodadmin/about.html')
+        return render(request, 'main/about.html')
+
