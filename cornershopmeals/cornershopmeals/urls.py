@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from main.views import Index, About
 from menus.views import create_menu, show_latest_menu, show_all_menus
-
+from employees.views import signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,5 +29,6 @@ urlpatterns = [
     path('menu/', show_latest_menu, name='todays_menu'),
     path('createmenu/', create_menu, name='createmenu'),
     path('menu/<uuid:menu_id>/', show_latest_menu, name='menu'),
+    path('signup/', signup, name='signup')
 
 ]

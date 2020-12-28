@@ -6,6 +6,15 @@ All Menus
 {% endblock title%}
 
 {% block content %}
+<div class="jumbotron jumbotron-fluid">
+    {% if user.is_authenticated %}
+        <h1> Hi {{ user.username }}!</h1>
+
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+
     <div class="col-md-10">
         <h1> All Menu </h1>
         <table class="table table-hover">
@@ -29,4 +38,9 @@ All Menus
             </tbody>
         </table>
     </div>
+
+    {% if user.is_staff %}
+        <a href="/createmenu" class="btn btn-success" name="save">Create</a>
+    {% endif %}
+</div>
 {% endblock content %}

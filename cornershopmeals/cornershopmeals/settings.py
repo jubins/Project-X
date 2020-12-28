@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 LOCAL_APPS = [
     'main',
     'menus',
+    'employees',
     'crispy_forms',
 ]
 
@@ -144,6 +145,6 @@ STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/home"
 
 LOGOUT_REDIRECT_URL = "/"
