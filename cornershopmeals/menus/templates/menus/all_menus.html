@@ -8,15 +8,6 @@ All Menus
 {% block content %}
 <div class="jumbotron jumbotron-fluid">
     <div class="col-md-10">
-        {% if user.is_authenticated %}
-            <h1> Hi {{ user.username }}! </h1>
-            <p class="text-right"><a class="btn btn-danger" href="{% url 'logout' %}">Logout</a> </p>
-        {% else %}
-            <p>You are not logged in</p>
-            <a href="{% url 'login' %}">Log In</a>
-        {% endif %}
-    </div>
-    <div class="col-md-10">
         <h1> All Menus </h1>
         <table class="table table-hover">
             <thead>
@@ -29,7 +20,7 @@ All Menus
                 {% endif %}
 
                 {% if user.is_staff and user.is_authenticated %}
-                    <th scope="col">Edit Menu</th>
+                    <th scope="col">View Selections</th>
                 {% endif %}
             </tr>
             </thead>
@@ -40,11 +31,11 @@ All Menus
                         <td>{{menu.menu_name}}</td>
                         <td>{{menu.menu_date}}</td>
                         {% if user.is_authenticated %}
-                            <th scope="row"><a href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: blue" onclick="choose_options(this.id);"></span></a></th>
+                            <th scope="row"><a href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="choose_options(this.id);"></span></a></th>
                         {% endif %}
 
                         {% if user.is_staff and user.is_authenticated %}
-                            <th scope="row"><a href="#"><span id="edit_menu_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-edit" style="color: orange" onclick="edit_menu(this.id);"></span></a></th>
+                            <th scope="row"><a href="#"><span id="view_selections{{ menu.menu_id }}_{{ user.id }}" class="fas fa-eye" style="color: cyan" onclick="view_selections(this.id);"></span></a></th>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -53,7 +44,7 @@ All Menus
     </div>
 
     {% if user.is_authenticated and user.is_staff %}
-        <a href="/create_menu" class="btn btn-success" name="save">Create</a>
+        <a href="/create_menu" class="btn btn-success" name="save">Create New Menu</a>
     {% endif %}
 </div>
 
@@ -61,7 +52,8 @@ All Menus
 
     function extract_id(menu_id_str, splitter) {
         const ids = menu_id_str.split(splitter)[1];
-        const menu_id, employee_id = ids.split('_');
+        const menu_id = ids.split('_')[0];
+        const employee_id = ids.split('_')[1];
         return [menu_id, employee_id];
 
     }
@@ -71,9 +63,9 @@ All Menus
         window.location = '/make_selection/'+ids[0]+'/'+ids[1];
     }
 
-    function edit_menu(menu_id_str) {
-        const menu_id = extract_id(menu_id_str, 'edit_menu_');
-        window.location = '/edit_menu/'+ids[0]+'/'+ids[1];
+    function view_selections(menu_id_str) {
+        const ids = extract_id(menu_id_str, 'view_selections');
+        window.location = '/view_selections/'+ids[0]+'/'+ids[1];
     }
 
 

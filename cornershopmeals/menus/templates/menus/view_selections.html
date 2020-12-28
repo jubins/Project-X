@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+View Selections
+{% endblock title%}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid container">
+    <div class="col-md-10">
+        <h1>View Employee Menu Selections </h1>
+
+        {% if user.is_authenticated and user.is_staff %}
+
+            <div class="list-group">
+                <h2>Menu ID: {{ menu.menu_id }}</h2>
+                <h2>Menu Created At: {{ menu.menu_date }}</h2>
+                <div class="col-md-10">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Employee Username</th>
+                            <th scope="col">Employee Name</th>
+                            <th scope="col">Menu Selection</th>
+                            <th scope="col">Customization Notes</th>
+                            <th scope="col">Last Modified At</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for selection in selections %}
+                        <tr>
+                            <td>{{ selection.employee_username }}</td>
+                            <td>{{ selection.employee_name }}</td>
+                            <td>{{ selection.employee_selection }}</td>
+                            <td>{{ selection.employee_customization_notes }}</td>
+                            <td>{{ selection.employee_last_modified_at }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>Only the food admin can view employee menu selections.</p>
+        <a href="{% url 'todays_menu' %}">View Today's Menu.</a>
+    {% endif %}
+</div>
+{% endblock content%}

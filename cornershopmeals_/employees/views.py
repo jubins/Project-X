@@ -10,17 +10,8 @@ def register(request):
     if request.method == 'POST':
         employee = EmployeeRegisterForm(request.POST)
         if employee.is_valid():
-            print('JJregistered: ', employee.cleaned_data)
             employee.save()
             messages.success(request, 'Employee created successfully.')
-            # employee = Employee()
-            # employee.first_name = request.POST.get('first_name')
-            # employee.last_name = request.POST.get('last_name')
-            # employee.email = request.POST.get('email')
-            # employee.password = request.POST.get('password1')
-            # employee.is_admin = request.POST.get('is_admin', False)
-            # print('JJpass: ', request.POST)
-            # employee.save()
             return redirect("/home")
     else:
         employee = EmployeeRegisterForm()
