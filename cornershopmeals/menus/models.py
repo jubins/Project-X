@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Menu(models.Model):
@@ -104,3 +105,38 @@ class Menu(models.Model):
 
     class Meta:
         db_table = 'menus'
+
+
+class MenuEmployee(models.Model):
+    menu_id = models.ForeignKey(
+        Menu,
+        on_delete=models.CASCADE
+    )
+    employee_id = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+    modified_at = models.DateTimeField(
+        auto_now=True,
+        null=True,
+        blank=True,
+        help_text='Date time when selection was modified.'
+    )
+    option_selected = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        help_text='Option selected by the employee.'
+    )
+    customization_notes = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        help_text='Customization notes',
+    )
+
+    def __str__(self):
+        return self.customization_notes
+
+    class Meta:
+        db_table = 'menu_employees'
