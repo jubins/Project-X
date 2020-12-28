@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Today's Menu: {{ menu.menu_id }}
+{% endblock title%}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="col-md-10 list-group">
+            <h1>Menu ID: {{ menu.menu_id }}</h1>
+            <h2>Menu Date: {{ menu.menu_date }}</h2>
+            <div class="col-md-10">
+            <a href="#" class="list-group-item list-group-item-action"><h3>Option 1: {{ menu.menu_option_1 }}</h3></a>
+            <a href="#" class="list-group-item list-group-item-action"><h3>Option 2: {{ menu.menu_option_2 }}</h3></a>
+            <a href="#" class="list-group-item list-group-item-action"><h3>Option 3: {{ menu.menu_option_3 }}</h3></a>
+            <a href="#" class="list-group-item list-group-item-action"><h3>Option 4: {{ menu.menu_option_4 }}</h3></a>
+            <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_5 }}</h3></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const newUrl = document.URL + "{{ menu.menu_id }}";
+        if (document.URL !== newUrl) {
+            history.replaceState('', '', newUrl);
+        }
+
+    </script>
+{% endblock content %}

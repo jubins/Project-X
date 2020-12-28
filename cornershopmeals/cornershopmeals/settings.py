@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 from configparser import ConfigParser
 
-config = ConfigParser()
-config.read('config.ini')
+env = ConfigParser()
+env.read('env.ini')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!jpr4%zc8-(%#f1_(omvg(k*$z+&mj)rh)c868_=#=&k6p&li0'
+SECRET_KEY = '7mz3+q%syi!i$gmkbfq_$_=o#_gdv67nblm+l^widovbzy=zk-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -34,11 +34,13 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+LOCAL_APPS = [
     'main',
     'menus',
-    'employees',
     'crispy_forms',
+]
+
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -91,15 +95,14 @@ WSGI_APPLICATION = 'cornershopmeals.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config['database'].get('NAME'),
-        'USER': config['database'].get('USER'),
-        'PASSWORD': config['database'].get('PASSWORD'),
-        'HOST': config['database'].get('HOST'),
-        'PORT': config['database'].get('PORT'),
+        'NAME': env['database'].get('NAME'),
+        'USER': env['database'].get('USER'),
+        'PASSWORD': env['database'].get('PASSWORD'),
+        'HOST': env['database'].get('HOST'),
+        'PORT': env['database'].get('PORT'),
     }
 }
 
-AUTH_USER_MODEL = 'employees.employee'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

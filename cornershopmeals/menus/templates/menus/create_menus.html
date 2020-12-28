@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Create New Menu
+{% endblock title%}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid container">
+<form method="POST">
+    <div class="col-md-10 jumbotron">
+        <h1> Create New Menu </h1>
+            {% csrf_token %}
+            {{ form | crispy }}
+        <button type="submit" class="btn btn-success" name="save">Create</button>
+    </div>
+</form>
+</div>
+{% endblock content%}

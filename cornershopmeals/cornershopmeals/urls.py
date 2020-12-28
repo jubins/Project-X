@@ -16,16 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from main.views import Index, About
-from employees.views import Register
+from menus.views import create_menu, show_latest_menu, show_all_menus
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Index.as_view(), name='index'),
+    path('', include('django.contrib.auth.urls')),
     path('index/', Index.as_view(), name='index'),
     path('about/', About.as_view(), name='about'),
-    path('signup/', Register, name='signup'),
-    path('menu/', Register, name='menu'),
-    path('', include('django.contrib.auth.urls')),
+    path("home/", show_all_menus, name="home"),
+    path('menu/', show_latest_menu, name='todays_menu'),
+    path('createmenu/', create_menu, name='createmenu'),
+    path('menu/<uuid:menu_id>/', show_latest_menu, name='menu'),
 
 ]
