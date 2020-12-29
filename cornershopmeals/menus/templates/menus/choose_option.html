@@ -9,114 +9,109 @@ Choose Menu Option
 {% block content %}
 <div class="jumbotron jumbotron-fluid">
     <div class="col-md-10">
-        {% if user.is_authenticated %}
-            <h1> Hi {{ user.username }}! </h1>
-            <p class="text-right"><a class="btn btn-danger" href="{% url 'logout' %}">Logout</a> </p>
+        <form method="POST" class="col-md-10">
+            {% csrf_token %}
+            <h2>Menu Id: {{ menu.menu_id }} </h2>
+            <h2>Menu Created At: {{ menu.menu_date }} </h2>
 
-            <form method="POST" class="col-md-10">
-                {% csrf_token %}
-                <h2>Menu Id: {{ menu.menu_id }} </h2>
-                <h2>Menu Created At: {{ menu.menu_date }} </h2>
-
-                <div class="container">
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option1" id="{{ menu.menu_id }}_{{ employee_id }}_option1">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option1">
-                            Option 1: {{ menu.menu_option_1 }}
-                        </label>
-                    </div>
-                    {% if menu.menu_option_2 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option2" id="{{ menu.menu_id }}_{{ employee_id }}_option2">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option2">
-                            Option 2: {{ menu.menu_option_2 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_3 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option3" id="{{ menu.menu_id }}_{{ employee_id }}_option3">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option3">
-                            Option 3: {{ menu.menu_option_3 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_4 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option4" id="{{ menu.menu_id }}_{{ employee_id }}_option4">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option4">
-                            Option 4: {{ menu.menu_option_4 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_5 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option5" id="{{ menu.menu_id }}_{{ employee_id }}_option5">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option5">
-                            Option 5: {{ menu.menu_option_5 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_6 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option6" id="{{ menu.menu_id }}_{{ employee_id }}_option6">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option6">
-                            Option 6: {{ menu.menu_option_6 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_7 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option7" id="{{ menu.menu_id }}_{{ employee_id }}_option7">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option7">
-                            Option 7: {{ menu.menu_option_7 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_8 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option8" id="{{ menu.menu_id }}_{{ employee_id }}_option8">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option8">
-                            Option 8: {{ menu.menu_option_8 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_9 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option9" id="{{ menu.menu_id }}_{{ employee_id }}_option9">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option9">
-                            Option 9: {{ menu.menu_option_9 }}
-                        </label>
-                    </div>
-                    {% endif %}
-                    {% if menu.menu_option_10 %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option10" id="{{ menu.menu_id }}_{{ employee_id }}_option10">
-                        <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option10">
-                            Option 10: {{ menu.menu_option_10 }}
-                        </label>
-                    </div>
-                    {% endif %}
-
-                    <div class="form-group">
-                        <label for="{{ menu.menu_id }}_{{ employee_id }}_notes">Customization Notes</label>
-                        <textarea class="form-control" id="{{ menu.menu_id }}_{{ employee_id }}_notes" name="{{ menu.menu_id }}_{{ employee_id }}_notes" placeholder="(Optional) Add notes to customize your selection"></textarea>
-                    </div>
+            <div class="container">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option1" id="{{ menu.menu_id }}_{{ employee_id }}_option1">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option1">
+                        Option 1: {{ menu.menu_option_1 }}
+                    </label>
                 </div>
-                <button type="submit" class="btn btn-success" name="save" >Submit</button>
-                <p>You last modified at: {{ menu_employee.modified_at }} </p>
-            </form>
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% else %}
-            <p>You are not logged in</p>
-            <a href="{% url 'login' %}">Log In</a>
+                {% if menu.menu_option_2 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option2" id="{{ menu.menu_id }}_{{ employee_id }}_option2">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option2">
+                        Option 2: {{ menu.menu_option_2 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_3 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option3" id="{{ menu.menu_id }}_{{ employee_id }}_option3">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option3">
+                        Option 3: {{ menu.menu_option_3 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_4 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option4" id="{{ menu.menu_id }}_{{ employee_id }}_option4">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option4">
+                        Option 4: {{ menu.menu_option_4 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_5 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option5" id="{{ menu.menu_id }}_{{ employee_id }}_option5">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option5">
+                        Option 5: {{ menu.menu_option_5 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_6 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option6" id="{{ menu.menu_id }}_{{ employee_id }}_option6">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option6">
+                        Option 6: {{ menu.menu_option_6 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_7 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option7" id="{{ menu.menu_id }}_{{ employee_id }}_option7">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option7">
+                        Option 7: {{ menu.menu_option_7 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_8 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option8" id="{{ menu.menu_id }}_{{ employee_id }}_option8">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option8">
+                        Option 8: {{ menu.menu_option_8 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_9 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option9" id="{{ menu.menu_id }}_{{ employee_id }}_option9">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option9">
+                        Option 9: {{ menu.menu_option_9 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_10 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option10" id="{{ menu.menu_id }}_{{ employee_id }}_option10">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option10">
+                        Option 10: {{ menu.menu_option_10 }}
+                    </label>
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="{{ menu.menu_id }}_{{ employee_id }}_notes">Customization Notes</label>
+                    <textarea class="form-control" id="{{ menu.menu_id }}_{{ employee_id }}_notes" name="{{ menu.menu_id }}_{{ employee_id }}_notes" placeholder="(Optional) Add notes to customize your selection"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success" name="save" >Submit</button>
+            <p>You last modified at: {{ menu_employee.modified_at }} </p>
+        </form>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+        <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
         {% endif %}
     </div>
 </div>

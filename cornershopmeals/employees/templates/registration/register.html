@@ -6,14 +6,15 @@ Create an Account
 {% endblock %}
 
 {% block content %}
+<div class="jumbotron jumbotron-fluid container">
     <form method="POST" class="form-group">
         {% csrf_token %}
         <div class="col-md-10">
-            <p>Already have an employee account? Login <a href="/login">here</a>.</p>
 
             {{ form|crispy }}
 
             <button type="submit" class="btn btn-success">Register</button>
         </div>
     </form>
+</div>
 {% endblock %}

@@ -33,7 +33,6 @@ def view_selections(request, menu_id, employee_id):
             s['employee_customization_notes'] = me[0].customization_notes if me else None
             s['employee_last_modified_at'] = me[0].modified_at if me else None
             selections.append(s)
-        print('JJselec: ', selections)
         content = {'selections': selections, 'menu': menu}
         return render(request, 'menus/view_selections.html', content)
     return render(request, 'menus/view_selections.html', {'selections': None})

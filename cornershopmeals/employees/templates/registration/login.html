@@ -6,14 +6,15 @@ Login Here
 {% endblock title%}
 
 {% block content %}
-<form method="POST" class="form-group">
-    {% csrf_token %}
+<div class="jumbotron jumbotron-fluid container">
+    <form method="POST" class="form-group">
+        {% csrf_token %}
 
-    <div class="col-md-10">
-        {{ form|crispy }}
-        <p>Don't have an employee account? Create one <a href="/signup">here</a>.</p>
-        <button type="submit" class="btn btn-success">Login</button>
-    </div>
-</form>
-
+        <div class="col-md-10">
+            {{ form|crispy }}
+            <p>Don't have an employee account? Create one <a href="/signup">here</a>.</p>
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}

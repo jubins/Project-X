@@ -2,28 +2,124 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-Today's Menu: {{ menu.menu_id }}
+Latest Menu: {{ menu.menu_id }}
 {% endblock title%}
 
 {% block content %}
-    <div class="jumbotron">
+<div class="jumbotron jumbotron-fluid">
+    <div class="col-md-10">
+        {% if not user.is_authenticated %}
+        <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="row float-right">
+                <button id="choose_options_{{ menu.menu_id }}_{{ user.id }}" title="Please choose your preferred meals until 11 am CLT." type="submit" class="btn btn-success" name="save" onclick="choose_options(this.id);">Choose Options</button>
+            </div>
+        {% endif %}
+
         <div class="col-md-10 list-group">
-            <h1>Menu ID: {{ menu.menu_id }}</h1>
+            <h2>Menu ID: {{ menu.menu_id }}</h2>
             <h2>Menu Date: {{ menu.menu_date }}</h2>
             <div class="col-md-10">
-            <a href="#" class="list-group-item list-group-item-action"><h3>Option 1: {{ menu.menu_option_1 }}</h3></a>
-            <a href="#" class="list-group-item list-group-item-action"><h3>Option 2: {{ menu.menu_option_2 }}</h3></a>
-            <a href="#" class="list-group-item list-group-item-action"><h3>Option 3: {{ menu.menu_option_3 }}</h3></a>
-            <a href="#" class="list-group-item list-group-item-action"><h3>Option 4: {{ menu.menu_option_4 }}</h3></a>
-            <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_5 }}</h3></a>
+                {% if menu.menu_option_1 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 1: {{ menu.menu_option_1 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_2 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 2: {{ menu.menu_option_2 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_3 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 3: {{ menu.menu_option_3 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_4 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 4: {{ menu.menu_option_4 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_5 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_5 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_6 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_6 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_7 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_7 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_8 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_8 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_9 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_9 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_10 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_10 }}</h3></a>
+                {% endif %}
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        const newUrl = document.URL + "{{ menu.menu_id }}";
-        if (document.URL !== newUrl) {
-            history.replaceState('', '', newUrl);
+<script>
+        updateURL('{{ menu.menu_id }}');
+        validate_booking_window("choose_options_{{ menu.menu_id }}_{{ user.id }}");
+
+        function convert_to_timezone(date_time, time_zone) {
+            return date_time.toLocaleString("en-US", {timeZone: time_zone})
+        }
+
+        function validate_booking_window(button_id) {
+            const client_time = new Date();
+            const year = client_time.getFullYear()
+            const date = client_time.getDate()
+            const month = client_time.getMonth()
+            const date_time = new Date(year.toString() + '-' + month.toString() + '-' + date.toString() + 'T14:00:00Z')
+            const threshold_chile_time = convert_to_timezone(date_time, "America/Santiago")
+            const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
+
+            convert_db_date_to_datetime('{{menu.menu_date}}')
+            if (client_chile_time > threshold_chile_time) {
+                $('#'+button_id).prop( "disabled", true );
+            }else  {
+                $('#'+button_id).prop( "disabled", false );
+            }
+        }
+
+        function getTwentyFourHourTime(timeAmPmString) {
+            const dummy_date = "01/01/2020 "
+            const time = timeAmPmString.split(' ')
+            const amPm = (time[1] === 'p.m.') ? 'PM' : 'AM'
+            const d = new Date(dummy_date + time[0] + ' ' + amPm);
+            return [d.getHours(), d.getMinutes()]
+        }
+
+        function convert_db_date_to_datetime(db_date) {
+            const months = {'Jan.': '01', 'Feb.': '02', 'Mar.': '03', 'Apr.': '04', 'May.': '05', 'Jun.': '06', 'Jul.': '07', 'Aug.': '08', 'Sep.': '09', 'Oct.': '10', 'Nov.': '11', 'Dec.': '12'}
+            const parts = db_date.split(', ')
+            const month_day = parts[0].split(' ')
+            const month = months[month_day[0]]
+            const day = month_day[1].toString()
+            const year = parts[1].toString()
+            const time = getTwentyFourHourTime(parts[2])
+            const hour = time[0].toString()
+            const minutes = time[1].toString()
+            const date = year + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':00'
+            return new Date(date);
+        }
+
+        function extract_id(menu_id_str, splitter) {
+            const ids = menu_id_str.split(splitter)[1];
+            const menu_id = ids.split('_')[0];
+            const employee_id = ids.split('_')[1];
+            return [menu_id, employee_id];
+        }
+
+        function choose_options(menu_id_str) {
+            const ids = extract_id(menu_id_str, 'choose_options_');
+            window.location = '/make_selection/'+ids[0]+'/'+ids[1];
+        }
+
+        function updateURL(id) {
+            if (!document.URL.includes(id)) {
+                history.replaceState('', '', id);
+            }
         }
     </script>
 {% endblock content %}
