@@ -8,15 +8,24 @@ Latest Menu: {{ menu.menu_id }}
 {% block content %}
 <div class="jumbotron jumbotron-fluid">
     <div class="col-md-10">
-        <h1>Latest Menu</h1>
+        <h1>Menu</h1>
         {% if not user.is_authenticated %}
         <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
         {% endif %}
 
         {% if user.is_authenticated %}
+        <div>
             <div class="row float-right">
                 <button id="choose_options_{{ menu.menu_id }}_{{ user.id }}" title="Please choose your preferred meals until 11 am CLT." type="submit" class="btn btn-success" name="save" onclick="choose_options(this.id);">Choose Options</button>
+                {% if user.is_staff %}
+                <form method="GET">
+                    {% csrf_token %}
+                    <button id="slack_{{ menu.menu_id }}_{{ user.id }}" type="submit" class="btn btn-warning" name="slack" value="slack_{{ menu.menu_id }}_{{ user.id }}">Slack Notify</button>
+                </form>
+
+                {% endif %}
             </div>
+        </div>
         {% endif %}
 
         <div class="col-md-10 list-group">
@@ -55,6 +64,13 @@ Latest Menu: {{ menu.menu_id }}
                 {% endif %}
             </div>
         </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="text-white bg-info"> {{ message }} </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
 </div>
 
@@ -62,6 +78,7 @@ Latest Menu: {{ menu.menu_id }}
         const menu_id = document.URL.split('menu/')[1];
         updateURL(menu_id);
         validate_booking_window("choose_options_{{ menu.menu_id }}_{{ user.id }}", "{{ menu.menu_date }}");
+        validate_booking_window("slack_{{ menu.menu_id }}_{{ user.id }}", "{{ menu.menu_date }}");
 
         function convert_to_timezone(date_time, time_zone) {
             return new Date(date_time.toLocaleString("en-US", {timeZone: time_zone}))
@@ -110,7 +127,7 @@ Latest Menu: {{ menu.menu_id }}
         function updateURL(id) {
             id = (!id) ? '{{ menu.menu_id }}' : id;
             const urlSplit =  (document.URL.includes('/create_menu/')) ? document.URL.split('create_menu') : document.URL.split('menu')
-            const newUrl = urlSplit[0] + 'menu/'+id
+            const newUrl = urlSplit[0] + 'menu/'+id+'/'
             if (!document.URL.includes(id)) {
                 history.replaceState('', '', newUrl);
             }

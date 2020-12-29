@@ -112,7 +112,7 @@ Choose Menu Option
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            <li class="text-white bg-info"> {{ message }} </li>
             {% endfor %}
         </ul>
         {% endif %}
