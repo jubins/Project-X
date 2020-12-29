@@ -1,0 +1,162 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Choose Menu Option
+{% endblock title%}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="col-md-10">
+        <form method="POST" class="col-md-10">
+            {% csrf_token %}
+            <h2>Menu Id: {{ menu.menu_id }} </h2>
+            <h2>Menu Created At: {{ menu.menu_date }} </h2>
+
+            <div class="container">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option1" id="{{ menu.menu_id }}_{{ employee_id }}_option1">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option1">
+                        Option 1: {{ menu.menu_option_1 }}
+                    </label>
+                </div>
+                {% if menu.menu_option_2 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option2" id="{{ menu.menu_id }}_{{ employee_id }}_option2">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option2">
+                        Option 2: {{ menu.menu_option_2 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_3 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option3" id="{{ menu.menu_id }}_{{ employee_id }}_option3">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option3">
+                        Option 3: {{ menu.menu_option_3 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_4 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option4" id="{{ menu.menu_id }}_{{ employee_id }}_option4">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option4">
+                        Option 4: {{ menu.menu_option_4 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_5 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option5" id="{{ menu.menu_id }}_{{ employee_id }}_option5">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option5">
+                        Option 5: {{ menu.menu_option_5 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_6 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option6" id="{{ menu.menu_id }}_{{ employee_id }}_option6">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option6">
+                        Option 6: {{ menu.menu_option_6 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_7 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option7" id="{{ menu.menu_id }}_{{ employee_id }}_option7">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option7">
+                        Option 7: {{ menu.menu_option_7 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_8 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option8" id="{{ menu.menu_id }}_{{ employee_id }}_option8">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option8">
+                        Option 8: {{ menu.menu_option_8 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_9 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option9" id="{{ menu.menu_id }}_{{ employee_id }}_option9">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option9">
+                        Option 9: {{ menu.menu_option_9 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if menu.menu_option_10 %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" value="{{ menu.menu_id }}_{{ employee_id }}_option10" id="{{ menu.menu_id }}_{{ employee_id }}_option10">
+                    <label class="form-check-label" for="{{ menu.menu_id }}_{{ employee_id }}_option10">
+                        Option 10: {{ menu.menu_option_10 }}
+                    </label>
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="{{ menu.menu_id }}_{{ employee_id }}_notes">Customization Notes</label>
+                    <textarea class="form-control" id="{{ menu.menu_id }}_{{ employee_id }}_notes" name="{{ menu.menu_id }}_{{ employee_id }}_notes" placeholder="(Optional) Add notes to customize your selection"></textarea>
+                </div>
+            </div>
+            <button id="submit_choices" type="submit" class="btn btn-success" name="save" >Submit</button>
+            <p id="selection_time_message"></p>
+            <p>If you made a selection, your choices will be pre-populated. </p>
+            <p>You last modified at: {{ menu_employee.modified_at }}</p>
+        </form>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+        <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    $('#{{ menu.menu_id }}_{{ employee_id }}_option{{option}}').prop('checked', true);
+    $('#{{ menu.menu_id }}_{{ employee_id }}_notes').val('{{ menu_employee.customization_notes | linebreaksbr }}');
+
+    function convert_to_timezone(date_time, time_zone) {
+            return new Date(date_time.toLocaleString("en-US", {timeZone: time_zone}))
+    }
+
+    function validate_booking_window(button_id, db_date) {
+        const client_time = new Date();
+        const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
+        const menu_date = convert_db_date_to_datetime(db_date);
+
+        if (menu_date.getFullYear() === client_chile_time.getFullYear() &&
+            menu_date.getMonth() === client_chile_time.getMonth() &&
+            menu_date.getDate() === client_chile_time.getDate() &&
+            client_chile_time.getHours() <= 11){
+            $('#'+button_id).prop( "disabled", false );
+        } else {
+            $('#'+button_id).prop( "disabled", true );
+            $('#selection_time_message').text("You cannot edit menu options after 11 am CLT of the given date.")
+            $('#selection_time_message').addClass('text-danger');
+        }
+    }
+
+    function convert_db_date_to_datetime(db_date) {
+        const months = {'Jan.': '01', 'Feb.': '02', 'Mar.': '03', 'Apr.': '04', 'May.': '05', 'Jun.': '06', 'Jul.': '07', 'Aug.': '08', 'Sep.': '09', 'Oct.': '10', 'Nov.': '11', 'Dec.': '12'}
+        let [month, day, year, hour, minute, period]= db_date.split(/[ ,:]+/)
+        if (period === 'p.m.'){
+            hour = parseInt(hour)+12
+            hour = hour.toString()
+        } else{
+            hour = '0'+hour
+        }
+        const dateString = year + '-' + months[month] + '-' + day + 'T' + hour + ':' + minute + ':00'
+        return new Date(dateString);
+    }
+
+
+      validate_booking_window('submit_choices', '{{ menu.menu_date }}');
+</script>
+{% endblock content%}

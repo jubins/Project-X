@@ -1,0 +1,78 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+All Menus
+{% endblock title%}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+
+    <div class="col-md-10">
+        <div class="row float-right">
+            {% if user.is_authenticated and user.is_staff %}
+            <a href="/create_menu" class="btn btn-success" name="save">Create New Menu</a>
+            {% endif %}
+        </div>
+        {% if not user.is_authenticated %}
+            <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to view more options.</p>
+        {% endif %}
+
+        <h1> All Menus </h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Menu ID</th>
+                <th scope="col">Menu Name</th>
+                <th scope="col">Menu Date</th>
+                {% if user.is_authenticated %}
+                    <th scope="col">Go to Menu</th>
+                {% endif %}
+
+                {% if user.is_staff and user.is_authenticated %}
+                    <th scope="col">View Employee Selections</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+                {% for menu in menus %}
+                    <tr>
+                        <th scope="row">{{menu.menu_id}}</th>
+                        <td>{{menu.menu_name}}</td>
+                        <td>{{menu.menu_date}}</td>
+                        {% if user.is_authenticated %}
+                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="choose_options(this.id);"></span></a></th>
+                        {% endif %}
+
+                        {% if user.is_staff and user.is_authenticated %}
+                            <th scope="row"><a href="#"><span id="view_selections{{ menu.menu_id }}_{{ user.id }}" class="fas fa-eye" style="color: cyan" onclick="view_selections(this.id);"></span></a></th>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    function extract_id(menu_id_str, splitter) {
+        const ids = menu_id_str.split(splitter)[1];
+        const menu_id = ids.split('_')[0];
+        const employee_id = ids.split('_')[1];
+        return [menu_id, employee_id];
+
+    }
+
+    function choose_options(menu_id_str) {
+        const ids = extract_id(menu_id_str, 'choose_options_');
+        window.location = '/make_selection/'+ids[0]+'/'+ids[1];
+    }
+
+    function view_selections(menu_id_str) {
+        const ids = extract_id(menu_id_str, 'view_selections');
+        window.location = '/view_selections/'+ids[0]+'/'+ids[1];
+    }
+
+</script>
+{% endblock content %}
