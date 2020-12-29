@@ -24,9 +24,6 @@ env.read('env.ini')
 ### HEROKU SETTINGS START ###
 import django_heroku
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Static files (CSS, JavaScript, Images)
@@ -171,3 +168,5 @@ LOGIN_REDIRECT_URL = "/home"
 
 LOGOUT_REDIRECT_URL = "/"
 
+# Activate Django-Heroku.
+django_heroku.settings(locals())
