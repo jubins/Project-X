@@ -7,6 +7,7 @@ class CreateNewMenu(ModelForm):
         model = Menu
         fields = [
             'menu_name',
+            'menu_date',
             'menu_option_1',
             'menu_option_2',
             'menu_option_3',
