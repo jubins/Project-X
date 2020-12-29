@@ -22,11 +22,11 @@ All Menus
         <table class="table table-hover">
             <thead>
             <tr>
-                <th scope="col">Menu_ID</th>
-                <th scope="col">Menu_Name</th>
-                <th scope="col">Menu_Date</th>
+                <th scope="col">Menu ID</th>
+                <th scope="col">Menu Name</th>
+                <th scope="col">Menu Date</th>
                 {% if user.is_authenticated %}
-                    <th scope="col">Choose Options</th>
+                    <th scope="col">Go to Menu</th>
                 {% endif %}
 
                 {% if user.is_staff and user.is_authenticated %}
@@ -41,7 +41,7 @@ All Menus
                         <td>{{menu.menu_name}}</td>
                         <td>{{menu.menu_date}}</td>
                         {% if user.is_authenticated %}
-                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="validate_booking_window(this.id, {{menu.menu_date}}); choose_options(this.id);"></span></a></th>
+                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="choose_options(this.id);"></span></a></th>
                         {% endif %}
 
                         {% if user.is_staff and user.is_authenticated %}
@@ -56,7 +56,6 @@ All Menus
 </div>
 
 <script>
-
     function extract_id(menu_id_str, splitter) {
         const ids = menu_id_str.split(splitter)[1];
         const menu_id = ids.split('_')[0];
@@ -74,43 +73,6 @@ All Menus
         const ids = extract_id(menu_id_str, 'view_selections');
         window.location = '/view_selections/'+ids[0]+'/'+ids[1];
     }
-
-    function convert_db_date_to_datetime(db_date) {
-        const months = {'Jan.': '01', 'Feb.': '02', 'Mar.': '03', 'Apr.': '04', 'May.': '05', 'Jun.': '06', 'Jul.': '07', 'Aug.': '08', 'Sep.': '09', 'Oct.': '10', 'Nov.': '11', 'Dec.': '12'}
-        const parts = db_date.split(', ')
-        const month_day = parts[0].split(' ')
-        const month = months[month_day[0]]
-        const day = month_day[1].toString()
-        const year = parts[1].toString()
-        const time = getTwentyFourHourTime(parts[2])
-        const hour = time[0].toString()
-        const minutes = time[1].toString()
-        const date = year + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':00'
-        return new Date(date);
-    }
-
-    function convert_to_timezone(date_time, time_zone) {
-        return date_time.toLocaleString("en-US", {timeZone: time_zone})
-    }
-
-    function validate_booking_window(button_id, menu_date) {
-        const client_time = new Date();
-        const year = client_time.getFullYear()
-        const date = client_time.getDate()
-        const month = client_time.getMonth()
-        const date_time = new Date(year.toString() + '-' + month.toString() + '-' + date.toString() + 'T14:00:00Z')
-        const threshold_chile_time = convert_to_timezone(date_time, "America/Santiago")
-        const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
-
-        console.log('JJhere: ', client_chile_time, threshold_chile_time, threshold_chile_time-client_chile_time);
-        if ((client_chile_time > threshold_chile_time)) {
-            e.preventDefault();
-            return false;
-        } else  {
-            return true;
-        }
-    }
-
 
 </script>
 {% endblock content %}

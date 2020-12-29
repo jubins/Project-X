@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from main.views import Index, About
-from menus.views import create_menu, view_selections, make_selection, show_latest_menu, show_all_menus
+from menus.views import create_menu, view_selections, make_selection, show_latest_menu, show_all_menus, show_menu_by_id
 from employees.views import signup
 
 urlpatterns = [
@@ -30,7 +30,7 @@ urlpatterns = [
     path('create_menu/', create_menu, name='create_menu'),
     path(r'view_selections/<uuid:menu_id>/<int:employee_id>', view_selections, name='view_selections'),
     path(r'make_selection/<uuid:menu_id>/<int:employee_id>', make_selection, name='make_selection'),
-    path('menu/<uuid:menu_id>/', show_latest_menu, name='menu'),
+    path('menu/<uuid:menu_id>/', show_menu_by_id, name='menu'),
     path('signup/', signup, name='signup')
 
 ]

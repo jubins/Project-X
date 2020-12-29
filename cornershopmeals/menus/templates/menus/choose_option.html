@@ -99,9 +99,10 @@ Choose Menu Option
                     <textarea class="form-control" id="{{ menu.menu_id }}_{{ employee_id }}_notes" name="{{ menu.menu_id }}_{{ employee_id }}_notes" placeholder="(Optional) Add notes to customize your selection"></textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success" name="save" >Submit</button>
+            <button id="submit_choices" type="submit" class="btn btn-success" name="save" >Submit</button>
+            <p id="selection_time_message"></p>
             <p>If you made a selection, your choices will be pre-populated. </p>
-            <p>You last modified at: {{ menu_employee.modified_at }}.</p>
+            <p>You last modified at: {{ menu_employee.modified_at }}</p>
         </form>
         {% if messages %}
         <ul class="messages">
@@ -119,6 +120,43 @@ Choose Menu Option
 
 <script>
     $('#{{ menu.menu_id }}_{{ employee_id }}_option{{option}}').prop('checked', true);
-    $('#{{ menu.menu_id }}_{{ employee_id }}_notes').val('{{ menu_employee.customization_notes }}');
+    $('#{{ menu.menu_id }}_{{ employee_id }}_notes').val('{{ menu_employee.customization_notes | linebreaksbr }}');
+
+    function convert_to_timezone(date_time, time_zone) {
+            return new Date(date_time.toLocaleString("en-US", {timeZone: time_zone}))
+    }
+
+    function validate_booking_window(button_id, db_date) {
+        const client_time = new Date();
+        const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
+        const menu_date = convert_db_date_to_datetime(db_date);
+
+        if (menu_date.getFullYear() === client_chile_time.getFullYear() &&
+            menu_date.getMonth() === client_chile_time.getMonth() &&
+            menu_date.getDate() === client_chile_time.getDate() &&
+            client_chile_time.getHours() <= 11){
+            $('#'+button_id).prop( "disabled", false );
+        } else {
+            $('#'+button_id).prop( "disabled", true );
+            $('#selection_time_message').text("You cannot edit menu options after 11 am CLT of the given date.")
+            $('#selection_time_message').addClass('text-danger');
+        }
+    }
+
+    function convert_db_date_to_datetime(db_date) {
+        const months = {'Jan.': '01', 'Feb.': '02', 'Mar.': '03', 'Apr.': '04', 'May.': '05', 'Jun.': '06', 'Jul.': '07', 'Aug.': '08', 'Sep.': '09', 'Oct.': '10', 'Nov.': '11', 'Dec.': '12'}
+        let [month, day, year, hour, minute, period]= db_date.split(/[ ,:]+/)
+        if (period === 'p.m.'){
+            hour = parseInt(hour)+12
+            hour = hour.toString()
+        } else{
+            hour = '0'+hour
+        }
+        const dateString = year + '-' + months[month] + '-' + day + 'T' + hour + ':' + minute + ':00'
+        return new Date(dateString);
+    }
+
+
+      validate_booking_window('submit_choices', '{{ menu.menu_date }}');
 </script>
 {% endblock content%}

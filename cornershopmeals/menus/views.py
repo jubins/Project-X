@@ -87,3 +87,16 @@ def show_latest_menu(request, menu=None, menu_id=None):
     except Menu.DoesNotExist:
         return HttpResponse("<h2> Sorry! There are no menus to show.</h3>")
 
+
+def show_menu_by_id(request, menu_id=None):
+    try:
+        context = {'menu': None}
+        if menu_id:
+            menu = Menu.objects.filter(menu_id=menu_id)
+            menu = menu[0] if menu else None
+            context['menu'] = menu
+        return render(request, 'menus/menu.html', context=context)
+    except Menu.DoesNotExist:
+        return HttpResponse("<h2> Sorry! There are no menus to show.</h3>")
+
+
