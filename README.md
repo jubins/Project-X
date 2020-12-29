@@ -45,7 +45,9 @@ Please follow below steps if you would like to setup the project locally.
 10. Slack notifications are sent on a channel. Please configure your slack `WEBHOOK_URL` in [`corenershopmeals/env.ini`](https://github.com/jubins/Cornershop-Meals/blob/master/cornershopmeals/env.ini#L12) to test slack notifications.
 
 ### Tests
-
+All the test cases are located in
+- [Menu Tests](https://github.com/jubins/Cornershop-Meals/blob/master/cornershopmeals/menus/tests.py)
+- [Employee Tests](https://github.com/jubins/Cornershop-Meals/blob/master/cornershopmeals/employees/tests.py)
 
 ### Contact
 - Jubin Soni
@@ -53,3 +55,22 @@ Please follow below steps if you would like to setup the project locally.
 
 ### Demo
 This project is hosted on Heroku: feel free to create accounts `https://cornershop-meals-app.herokuapp.com/signup/` and test the app.
+
+Login page
+![](https://github.com/jubins/Cornershop-Meals/blob/master/img/login_page.png)
+
+Open menu page
+![](https://github.com/jubins/Cornershop-Meals/blob/master/img/open_menu_page.png)
+
+Admin can view all menus
+![](https://github.com/jubins/Cornershop-Meals/blob/master/img/admin_can_view_all_menus.png)
+
+Admin can view all employee selections
+![](https://github.com/jubins/Cornershop-Meals/blob/master/img/admin_can_view_all_selections.png)
+
+Employee can choose options
+![](https://github.com/jubins/Cornershop-Meals/blob/master/img/employee_option_selection.png)
+
+Slack notifications
+![](https://github.com/jubins/Cornershop-Meals/blob/master/img/slack_notifications.png)
+
