@@ -38,19 +38,19 @@ Latest Menu: {{ menu.menu_id }}
                 <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_5 }}</h3></a>
                 {% endif %}
                 {% if menu.menu_option_6 %}
-                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_6 }}</h3></a>
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 6: {{ menu.menu_option_6 }}</h3></a>
                 {% endif %}
                 {% if menu.menu_option_7 %}
-                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_7 }}</h3></a>
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 7: {{ menu.menu_option_7 }}</h3></a>
                 {% endif %}
                 {% if menu.menu_option_8 %}
-                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_8 }}</h3></a>
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 8: {{ menu.menu_option_8 }}</h3></a>
                 {% endif %}
                 {% if menu.menu_option_9 %}
-                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_9 }}</h3></a>
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 9: {{ menu.menu_option_9 }}</h3></a>
                 {% endif %}
                 {% if menu.menu_option_10 %}
-                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_10 }}</h3></a>
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 10: {{ menu.menu_option_10 }}</h3></a>
                 {% endif %}
             </div>
         </div>
@@ -117,8 +117,10 @@ Latest Menu: {{ menu.menu_id }}
         }
 
         function updateURL(id) {
+            const urlSplit =  (document.URL.includes('/create_menu/')) ? document.URL.split('create_menu') : document.URL.split('menu')
+            const newUrl = urlSplit[0] + '/menu/'+id
             if (!document.URL.includes(id)) {
-                history.replaceState('', '', id);
+                history.replaceState('', '', newUrl);
             }
         }
     </script>
