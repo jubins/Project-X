@@ -29,16 +29,20 @@ Please follow below steps if you would like to setup the project locally.
     ```
     $ python manage.py runserver
     ```
-7. Run Celery
+7. Run Celery (in a different terminal window)
     ```
     $ celery -A cornershopmeals worker -l info
     ``` 
    
-9. Go to `localhost:8000/signup` to create an admin employee (superuser) account that will be the food admin, by checking `is_staff` option and make sure to choose good `username` and `password` otherwise Signup will not occur.
+8. Go to `localhost:8000/signup` to create a food admin employee account that will be the food admin, by checking `is_staff` option and make sure to choose good `username` and `password` otherwise Signup will not occur.
+    You can also create a superuser.
+    ```
+    $ python manage.py createsuperuser
+    ```
 
-10. Go to `localhost:8000/login` to create some employee accounts and use the app.
+9. Go to `localhost:8000/login` to create some employee accounts and use the app.
 
-11. Slack notifications are sent on a channel. Please configure your slack `WEBHOOK_URL` in [`corenershopmeals/env.ini`](https://github.com/jubins/Cornershop-Meals/blob/master/cornershopmeals/env.ini#L12) to test slack notifications.
+10. Slack notifications are sent on a channel. Please configure your slack `WEBHOOK_URL` in [`corenershopmeals/env.ini`](https://github.com/jubins/Cornershop-Meals/blob/master/cornershopmeals/env.ini#L12) to test slack notifications.
 
 ### Tests
 
