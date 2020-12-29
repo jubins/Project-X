@@ -23,7 +23,7 @@ class Menu(models.Model):
     menu_date = models.DateTimeField(
         default=timezone.now,
         null=False,
-        editable=False,
+        editable=True,
         help_text='Menu available date.',
     )
     menu_option_1 = models.CharField(
