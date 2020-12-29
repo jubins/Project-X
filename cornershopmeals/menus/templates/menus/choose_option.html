@@ -9,10 +9,15 @@ Choose Menu Option
 {% block content %}
 <div class="jumbotron jumbotron-fluid">
     <div class="col-md-10">
+        <h1>View Employee Menu Selections </h1>
+        {% if user.is_authenticated and  user.id != employee_id %}
+            <p>You do not have permission to access this page.</p>
+            <a href="{% url 'todays_menu' %}">View Today's Menu.</a>
+        {% elif user.is_authenticated %}
         <form method="POST" class="col-md-10">
             {% csrf_token %}
-            <h2>Menu Id: {{ menu.menu_id }} </h2>
-            <h2>Menu Created At: {{ menu.menu_date }} </h2>
+            <h3>Menu Id: {{ menu.menu_id }} </h3>
+            <h3>Menu Created At: {{ menu.menu_date }} </h3>
 
             <div class="container">
                 <div class="form-check">
@@ -107,13 +112,13 @@ Choose Menu Option
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            <li class="text-white bg-info"> {{ message }} </li>
             {% endfor %}
         </ul>
         {% endif %}
 
-        {% if not user.is_authenticated %}
-        <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
+        {% else %}
+        <p>You are not logged in. <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
         {% endif %}
     </div>
 </div>

@@ -9,6 +9,7 @@ All Menus
 <div class="jumbotron jumbotron-fluid">
 
     <div class="col-md-10">
+        <h1> All Menus </h1>
         <div class="row float-right">
             {% if user.is_authenticated and user.is_staff %}
             <a href="/create_menu" class="btn btn-success" name="save">Create New Menu</a>
@@ -18,7 +19,6 @@ All Menus
             <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to view more options.</p>
         {% endif %}
 
-        <h1> All Menus </h1>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -31,6 +31,7 @@ All Menus
 
                 {% if user.is_staff and user.is_authenticated %}
                     <th scope="col">View Employee Selections</th>
+                    <th scope="col">Notify on Slack</th>
                 {% endif %}
             </tr>
             </thead>
@@ -41,11 +42,12 @@ All Menus
                         <td>{{menu.menu_name}}</td>
                         <td>{{menu.menu_date}}</td>
                         {% if user.is_authenticated %}
-                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="choose_options(this.id);"></span></a></th>
+                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green; font-size: 18px" onclick="choose_options(this.id);"></span></a></th>
                         {% endif %}
 
                         {% if user.is_staff and user.is_authenticated %}
-                            <th scope="row"><a href="#"><span id="view_selections{{ menu.menu_id }}_{{ user.id }}" class="fas fa-eye" style="color: cyan" onclick="view_selections(this.id);"></span></a></th>
+                            <th scope="row"><a href="#"><span id="view_selections_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-eye" style="color: darkorange; font-size: 18px" onclick="view_selections(this.id);"></span></a></th>
+                            <th scope="row"><a href="#"><span id="slack_{{ menu.menu_id }}_{{ user.id }}" class="fab fa-slack" style="color: purple; font-size: 18px" onclick="slack_notify(this.id);"></span></a></th>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -70,8 +72,13 @@ All Menus
     }
 
     function view_selections(menu_id_str) {
-        const ids = extract_id(menu_id_str, 'view_selections');
+        const ids = extract_id(menu_id_str, 'view_selections_');
         window.location = '/view_selections/'+ids[0]+'/'+ids[1];
+    }
+
+    function slack_notify(menu_id_str) {
+        const ids = extract_id(menu_id_str, 'slack_');
+        window.location = '/menu/'+ids[0];
     }
 
 </script>
