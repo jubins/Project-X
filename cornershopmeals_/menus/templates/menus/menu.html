@@ -1,0 +1,118 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Latest Menu: {{ menu.menu_id }}
+{% endblock title%}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="col-md-10">
+        {% if not user.is_authenticated %}
+        <p>You are not logged in <a href="{% url 'login' %}">Log In</a> to make a selection.</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="row float-right">
+                <button id="choose_options_{{ menu.menu_id }}_{{ user.id }}" title="Please choose your preferred meals until 11 am CLT." type="submit" class="btn btn-success" name="save" onclick="choose_options(this.id);">Choose Options</button>
+            </div>
+        {% endif %}
+
+        <div class="col-md-10 list-group">
+            <h2>Menu ID: {{ menu.menu_id }}</h2>
+            <h2>Menu Date: {{ menu.menu_date }}</h2>
+            <div class="col-md-10">
+                {% if menu.menu_option_1 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 1: {{ menu.menu_option_1 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_2 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 2: {{ menu.menu_option_2 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_3 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 3: {{ menu.menu_option_3 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_4 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 4: {{ menu.menu_option_4 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_5 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 5: {{ menu.menu_option_5 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_6 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 6: {{ menu.menu_option_6 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_7 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 7: {{ menu.menu_option_7 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_8 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 8: {{ menu.menu_option_8 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_9 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 9: {{ menu.menu_option_9 }}</h3></a>
+                {% endif %}
+                {% if menu.menu_option_10 %}
+                <a href="#" class="list-group-item list-group-item-action"><h3>Option 10: {{ menu.menu_option_10 }}</h3></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        const menu_id = document.URL.split('menu/')[1];
+        updateURL(menu_id);
+        validate_booking_window("choose_options_{{ menu.menu_id }}_{{ user.id }}", "{{ menu.menu_date }}");
+
+        function convert_to_timezone(date_time, time_zone) {
+            return new Date(date_time.toLocaleString("en-US", {timeZone: time_zone}))
+        }
+
+        function validate_booking_window(button_id, db_date) {
+            const client_time = new Date();
+            const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
+            const menu_date = convert_db_date_to_datetime(db_date);
+
+            if (menu_date.getFullYear() === client_chile_time.getFullYear() &&
+                menu_date.getMonth() === client_chile_time.getMonth() &&
+                menu_date.getDate() === client_chile_time.getDate() &&
+                client_chile_time.getHours() <= 11){
+                $('#'+button_id).prop( "disabled", false );
+            } else {
+                $('#'+button_id).prop( "disabled", true );
+            }
+        }
+
+        function convert_db_date_to_datetime(db_date) {
+            const months = {'Jan.': '01', 'Feb.': '02', 'Mar.': '03', 'Apr.': '04', 'May.': '05', 'Jun.': '06', 'Jul.': '07', 'Aug.': '08', 'Sep.': '09', 'Oct.': '10', 'Nov.': '11', 'Dec.': '12'}
+            let [month, day, year, hour, minute, period]= db_date.split(/[ ,:]+/)
+            if (period === 'p.m.'){
+                hour = parseInt(hour)+12
+                hour = hour.toString()
+            } else{
+                hour = '0'+hour
+            }
+            const dateString = year + '-' + months[month] + '-' + day + 'T' + hour + ':' + minute + ':00'
+            return new Date(dateString);
+        }
+
+        function extract_id(menu_id_str, splitter) {
+            const ids = menu_id_str.split(splitter)[1];
+            const menu_id = ids.split('_')[0];
+            const employee_id = ids.split('_')[1];
+            return [menu_id, employee_id];
+        }
+
+        function choose_options(menu_id_str) {
+            const ids = extract_id(menu_id_str, 'choose_options_');
+            window.location = '/make_selection/'+ids[0]+'/'+ids[1];
+        }
+
+        function updateURL(id) {
+            id = (!id) ? '{{ menu.menu_id }}' : id;
+            const urlSplit =  (document.URL.includes('/create_menu/')) ? document.URL.split('create_menu') : document.URL.split('menu')
+            const newUrl = urlSplit[0] + 'menu/'+id
+            if (!document.URL.includes(id)) {
+                history.replaceState('', '', newUrl);
+            }
+        }
+    </script>
+{% endblock content %}
