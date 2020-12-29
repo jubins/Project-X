@@ -71,6 +71,6 @@ Admin can view all employee selections
 Employee can choose options
 ![](https://github.com/jubins/Cornershop-Meals/blob/master/img/employee_option_selection.png)
 
-Slack notifications
+Slack notifications using Celery
 ![](https://github.com/jubins/Cornershop-Meals/blob/master/img/slack_notifications.png)
 
