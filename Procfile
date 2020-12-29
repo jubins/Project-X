@@ -1,1 +1,1 @@
-web: gunicorn cornershopmeals.wsgi
+web: gunicorn cornershopmeals/cornershopmeals.wsgi
