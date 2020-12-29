@@ -8,10 +8,11 @@ Create New Menu
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid container">
+    <div class="col-md-10">
+    <h1> Create New Menu </h1>
     {% if user.is_authenticated and user.is_staff %}
         <form method="POST">
             <div class="col-md-10 jumbotron">
-                <h1> Create New Menu </h1>
                     {% csrf_token %}
                     {{ form | crispy }}
                 <button type="submit" class="btn btn-success" name="save">Create</button>
@@ -21,5 +22,6 @@ Create New Menu
         <p>Only the food admin can create a new menu.</p>
         <a href="{% url 'todays_menu' %}">View Today's Menu.</a>
     {% endif %}
+</div>
 </div>
 {% endblock content%}

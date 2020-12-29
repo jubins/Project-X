@@ -96,11 +96,11 @@ WSGI_APPLICATION = 'cornershopmeals.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env['database'].get('NAME'),
-        'USER': env['database'].get('USER'),
-        'PASSWORD': env['database'].get('PASSWORD'),
-        'HOST': env['database'].get('HOST'),
-        'PORT': env['database'].get('PORT'),
+        'NAME': env['heroku_database'].get('NAME'),
+        'USER': env['heroku_database'].get('USER'),
+        'PASSWORD': env['heroku_database'].get('PASSWORD'),
+        'HOST': env['heroku_database'].get('HOST'),
+        'PORT': env['heroku_database'].get('PORT'),
     }
 }
 
@@ -148,3 +148,14 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = "/home"
 
 LOGOUT_REDIRECT_URL = "/"
+
+
+### CELERY SETTINGS START ###
+
+BROKER_URL = env['heroku_redis'].get('CELERY_BROKER_URL')
+
+ACCEPT_CONTENT = ['json']
+
+TASK_SERIALIZER = 'json'
+
+### CELERY SETTINGS END ###
