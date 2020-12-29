@@ -41,7 +41,7 @@ All Menus
                         <td>{{menu.menu_name}}</td>
                         <td>{{menu.menu_date}}</td>
                         {% if user.is_authenticated %}
-                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="validate_booking_window(this.id); choose_options(this.id);"></span></a></th>
+                            <th scope="row"><a title="You can book meals only until 11 am CLT." href="#"><span id="choose_options_{{ menu.menu_id }}_{{ user.id }}" class="fas fa-sign-in-alt" style="color: green" onclick="validate_booking_window(this.id, {{menu.menu_date}}); choose_options(this.id);"></span></a></th>
                         {% endif %}
 
                         {% if user.is_staff and user.is_authenticated %}
@@ -93,7 +93,7 @@ All Menus
         return date_time.toLocaleString("en-US", {timeZone: time_zone})
     }
 
-    function validate_booking_window(button_id) {
+    function validate_booking_window(button_id, menu_date) {
         const client_time = new Date();
         const year = client_time.getFullYear()
         const date = client_time.getDate()
@@ -102,8 +102,9 @@ All Menus
         const threshold_chile_time = convert_to_timezone(date_time, "America/Santiago")
         const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
 
-        if (client_chile_time > threshold_chile_time) {
-            event.preventDefault();
+        console.log('JJhere: ', client_chile_time, threshold_chile_time, threshold_chile_time-client_chile_time);
+        if ((client_chile_time > threshold_chile_time)) {
+            e.preventDefault();
             return false;
         } else  {
             return true;

@@ -62,11 +62,12 @@ Latest Menu: {{ menu.menu_id }}
         validate_booking_window("choose_options_{{ menu.menu_id }}_{{ user.id }}");
 
         function convert_to_timezone(date_time, time_zone) {
-            return date_time.toLocaleString("en-US", {timeZone: time_zone})
+            return new Date(date_time.toLocaleString("en-US", {timeZone: time_zone}))
         }
 
         function validate_booking_window(button_id) {
             const client_time = new Date();
+
             const year = client_time.getFullYear()
             const date = client_time.getDate()
             const month = client_time.getMonth()
@@ -74,7 +75,18 @@ Latest Menu: {{ menu.menu_id }}
             const threshold_chile_time = convert_to_timezone(date_time, "America/Santiago")
             const client_chile_time = convert_to_timezone(client_time, "America/Santiago")
 
-            convert_db_date_to_datetime('{{menu.menu_date}}')
+            console.log('chilean time', client_chile_time)
+
+            const menu_date = convert_db_date_to_datetime('{{ menu.menu_date }}');
+            console.log('localtime', client_chile_time)
+            console.log(menu_date)
+
+            if (menu_date.getFullYear() === client_chile_time.getFullYear() &&
+                menu_date.getMonth() === client_chile_time.getMonth() &&
+                menu_date.getDate() === client_chile_time.getDate() &&
+                client_chile_time.getHours() <= 11){
+            }
+
             if (client_chile_time > threshold_chile_time) {
                 $('#'+button_id).prop( "disabled", true );
             }else  {
@@ -91,17 +103,34 @@ Latest Menu: {{ menu.menu_id }}
         }
 
         function convert_db_date_to_datetime(db_date) {
+        console.log('JJdbdate', db_date);
             const months = {'Jan.': '01', 'Feb.': '02', 'Mar.': '03', 'Apr.': '04', 'May.': '05', 'Jun.': '06', 'Jul.': '07', 'Aug.': '08', 'Sep.': '09', 'Oct.': '10', 'Nov.': '11', 'Dec.': '12'}
-            const parts = db_date.split(', ')
-            const month_day = parts[0].split(' ')
-            const month = months[month_day[0]]
-            const day = month_day[1].toString()
-            const year = parts[1].toString()
-            const time = getTwentyFourHourTime(parts[2])
-            const hour = time[0].toString()
-            const minutes = time[1].toString()
-            const date = year + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':00'
-            return new Date(date);
+            let[month, day, year, hour, minute, period]= db_date.split(/[ ,:]+/)
+            console.log(month, day, year, hour, minute, period)
+            if(period === 'p.m.'){
+            hour = parseInt(hour)+12
+            hour = hour.toString()
+            }else{
+            hour = '0'+hour
+            }
+            const dateString = year + '-' + months[month] + '-' + day + 'T' + hour + ':' + minute + ':00'
+
+            return new Date(dateString)
+
+
+
+<!--            const parts = db_date.split(', ')-->
+<!--            const month_day = parts[0].split(' ')-->
+<!--            const month = months[month_day[0]]-->
+<!--            const day = month_day[1].toString()-->
+<!--            const year = parts[1].toString()-->
+<!--            const time = getTwentyFourHourTime(parts[2])-->
+<!--            const hour = time[0].toString()-->
+<!--            const minutes = time[1].toString()-->
+<!--            return new Date(year, month, day, hour, minutes)-->
+<!--            const date = year + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':00'-->
+<!--            console.log('Jdate', date);-->
+<!--            return new Date(date);-->
         }
 
         function extract_id(menu_id_str, splitter) {
@@ -118,7 +147,7 @@ Latest Menu: {{ menu.menu_id }}
 
         function updateURL(id) {
             const urlSplit =  (document.URL.includes('/create_menu/')) ? document.URL.split('create_menu') : document.URL.split('menu')
-            const newUrl = urlSplit[0] + '/menu/'+id
+            const newUrl = urlSplit[0] + 'menu/'+id
             if (!document.URL.includes(id)) {
                 history.replaceState('', '', newUrl);
             }
