@@ -21,6 +21,7 @@ View Selections
                         <tr>
                             <th scope="col">Employee Username</th>
                             <th scope="col">Employee Name</th>
+                            <th scope="col">Menu Selection Id</th>
                             <th scope="col">Menu Selection</th>
                             <th scope="col">Customization Notes</th>
                             <th scope="col">Last Modified At</th>
@@ -31,7 +32,8 @@ View Selections
                         <tr>
                             <td>{{ selection.employee_username }}</td>
                             <td>{{ selection.employee_name }}</td>
-                            <td>{{ selection.employee_selection }}</td>
+                            <td>{{ selection.employee_selection_id}}</td>
+                            <td>{{ selection.employee_selection_description }}</td>
                             <td>{{ selection.employee_customization_notes }}</td>
                             <td>{{ selection.employee_last_modified_at }}</td>
                         </tr>

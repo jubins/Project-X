@@ -28,10 +28,11 @@ def view_selections(request, menu_id, employee_id):
             s = dict()
             s['employee_username'] = e.username
             s['employee_name'] = e.first_name + ' ' + e.last_name
-            me = MenuEmployee.objects.filter(menu_id=menu_id)
-            s['employee_selection'] = me[0].option_selected if me else None
+            me = MenuEmployee.objects.filter(menu_id=menu_id, employee_id_id=e.id)
+            s['employee_selection_id'] = me[0].option_selected if me else None
             s['employee_customization_notes'] = me[0].customization_notes if me else None
             s['employee_last_modified_at'] = me[0].modified_at if me else None
+            s['employee_selection_description'] = getattr(menu, s['employee_selection_id'])
             selections.append(s)
         content = {'selections': selections, 'menu': menu}
         return render(request, 'menus/view_selections.html', content)
